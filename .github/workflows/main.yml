@@ -10,7 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: unzip -q -o proje.zip -d proje
+        with:
+          fetch-depth: 0
+      - name: En son yuklenen zipi ac
+        run: |
+          ZIP="$(git -c core.quotepath=off log --name-only --format= --diff-filter=AM -- '*.zip' | head -n 1)"
+          echo "Kullanilan: $ZIP"
+          unzip -q -o "$ZIP" -d proje
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
